@@ -88,13 +88,21 @@ def is_prime(n):
 def num_factors(n):
     """Return the number of factors of N, including 1 and N itself."""
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    factors= 0
+    for i in range(1,n+1):
+        if n % i == 0:
+            factors += 1
+    return factors
     # END PROBLEM 4
 
 def sus_points(score):
-    """Return the new score of a player taking into account the Sus Fuss rule."""
+    """Return the new score of a player taking into account the Supython3 ok -q 04s Fuss rule."""
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    if num_factors(score) == 3 or num_factors(score) == 4:
+        while not is_prime(score):
+            score += 1
+    return score
+            
     # END PROBLEM 4
 
 def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
@@ -102,7 +110,7 @@ def sus_update(num_rolls, player_score, opponent_score, dice=six_sided):
     PLAYER_SCORE and then rolls NUM_ROLLS DICE, *including* Sus Fuss.
     """
     # BEGIN PROBLEM 4
-    "*** YOUR CODE HERE ***"
+    return sus_points(player_score + take_turn(num_rolls,player_score,opponent_score,dice))
     # END PROBLEM 4
 
 
@@ -141,7 +149,16 @@ def play(strategy0, strategy1, update,
     """
     who = 0  # Who is about to take a turn, 0 (first) or 1 (second)
     # BEGIN PROBLEM 5
-    "*** YOUR CODE HERE ***"
+    while score0 < goal and score1 < goal:
+        if who == 0:
+            num_rolls = strategy0(score0, score1)  # 玩家0根据策略决定掷骰子数量
+            score0 = update(num_rolls, score0, score1, dice)  # 更新玩家0的得分
+        else:
+            num_rolls = strategy1(score1, score0)  # 玩家1根据策略决定掷骰子数量
+            score1 = update(num_rolls, score1, score0, dice)  # 更新玩家1的得分
+        
+        who = 1 - who  # 切换玩家
+    
     # END PROBLEM 5
     return score0, score1
 
